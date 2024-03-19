@@ -32,6 +32,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
             <!--fastjson依赖-->
             <dependency>
                 <groupId>com.alibaba</groupId>
@@ -77,6 +78,7 @@
                 <artifactId>knife4j-spring-boot-starter</artifactId>
                 <version>2.0.8</version>
             </dependency>
+
 
         </dependencies>
     </dependencyManagement>
