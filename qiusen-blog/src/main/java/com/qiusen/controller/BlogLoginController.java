@@ -6,6 +6,7 @@ import com.qiusen.enums.ResponseResult;
 import com.qiusen.exception.SystemException;
 import com.qiusen.service.BlogLoginService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,5 +25,13 @@ public class BlogLoginController {
         }
         return blogLoginService.login(user);
     }
+
+
+    @ApiOperation("退出登录")
+    @PostMapping("/logout")
+    public ResponseResult logout(){
+        return blogLoginService.logout();
+    }
+
 }
 
