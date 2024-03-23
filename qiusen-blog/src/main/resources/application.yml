@@ -26,3 +26,9 @@ mybatis-plus:
       logic-delete-value: 1
       logic-not-delete-value: 0
       id-type: auto
+
+minio:
+  endpointUrl: http://1.12.237.207:9001
+  accessKey: admin
+  secreKey: admin123456
+  bucketName: qs-blog
