@@ -1,5 +1,6 @@
 package com.qiusen.controller;
 
+import com.qiusen.annotation.SystemLog;
 import com.qiusen.domain.entity.User;
 import com.qiusen.enums.ResponseResult;
 import com.qiusen.service.UserService;
@@ -17,8 +18,14 @@ public class UserController {
     }
 
     @PutMapping("/userInfo")
+    @SystemLog(businessName = "更新用户信息")
     public ResponseResult updateUserInfo(@RequestBody User user){
         return userService.updateUserInfo(user);
+    }
+
+    @PostMapping("/register")
+    public ResponseResult register(@RequestBody User user){
+        return userService.register(user);
     }
 
 
