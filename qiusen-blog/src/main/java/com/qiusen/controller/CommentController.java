@@ -1,5 +1,6 @@
 package com.qiusen.controller;
 
+import com.qiusen.constants.SystemConstants;
 import com.qiusen.domain.entity.Comment;
 import com.qiusen.enums.ResponseResult;
 import com.qiusen.service.CommentService;
@@ -12,9 +13,12 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
     @GetMapping("/commentList")
-    public ResponseResult commentList(Long articleId, Integer pageNum, Integer
-            pageSize){
-        return commentService.commentList(articleId,pageNum,pageSize);
+    public ResponseResult commentList(Long articleId,Integer pageNum,Integer pageSize){
+        return commentService.commentList(SystemConstants.ARTICLE_COMMENT,articleId,pageNum,pageSize);
+    }
+    @GetMapping("/linkCommentList")
+    public ResponseResult linkCommentList(Integer pageNum,Integer pageSize){
+        return commentService.commentList(SystemConstants.LINK_COMMENT,null,pageNum,pageSize);
     }
 
     @PostMapping
