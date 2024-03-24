@@ -30,4 +30,13 @@ public class SystemConstants
      */
     public static final String LINK_COMMENT = "1";
 
+    /**
+     * 菜单权限
+     */
+    public static final String MENU = "C";
+
+    /**
+     * 按钮权限
+     */
+    public static final Object BUTTON = "F";
 }

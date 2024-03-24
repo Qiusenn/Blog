@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class BlogLoginController {
     @Autowired
     private BlogLoginService blogLoginService;
+
+    @ApiOperation("登录")
     @PostMapping("/login")
     public ResponseResult login(@RequestBody User user){
         if(!StringUtils.hasText(user.getUserName())) {

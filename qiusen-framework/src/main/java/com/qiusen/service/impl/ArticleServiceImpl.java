@@ -15,6 +15,7 @@ import com.qiusen.service.ArticleService;
 import com.qiusen.domain.entity.Article;
 import com.qiusen.service.CategoryService;
 import com.qiusen.utils.BeanCopyUtils;
+import com.qiusen.utils.RedisCache;
 import org.apache.ibatis.jdbc.SQL;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private RedisCache redisCache;
 
     /**
      * 分页获取热门文章
@@ -90,6 +94,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     public ResponseResult getArticleDetail(Long id) {
         //根据id查询文章
         Article article = getById(id);
+        //从redis中获取viewCount
+        Integer viewCount = redisCache.getCacheMapValue("article:viewCount", id.toString());
+        article.setViewCount(viewCount.longValue());
         //转换成VO
         ArticleDetailVo articleDetailVo = BeanCopyUtils.copyBean(article, ArticleDetailVo.class);
         //根据分类id查询分类名
@@ -100,5 +107,12 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         }
         //封装响应返回
         return ResponseResult.okResult(articleDetailVo);
+    }
+
+    @Override
+    public ResponseResult updateViewCount(Long id) {
+        //更新redis中对应 id的浏览量
+        redisCache.incrementCacheMapValue("article:viewCount",id.toString(),1);
+        return ResponseResult.okResult();
     }
 }
