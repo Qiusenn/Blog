@@ -1,8 +1,10 @@
 package com.qiusen.controller;
 
+import com.qiusen.domain.entity.Menu;
 import com.qiusen.domain.entity.User;
 import com.qiusen.domain.vo.AdminUserInfoVo;
 import com.qiusen.domain.vo.LoginUser;
+import com.qiusen.domain.vo.RoutersVo;
 import com.qiusen.domain.vo.UserInfoVo;
 import com.qiusen.enums.AppHttpCodeEnum;
 import com.qiusen.enums.ResponseResult;
@@ -52,4 +54,14 @@ public class LoginController {
         AdminUserInfoVo adminUserInfoVo = new AdminUserInfoVo(perms,roleKeyList,userInfoVo);
         return ResponseResult.okResult(adminUserInfoVo);
     }
+
+    @GetMapping("getRouters")
+    public ResponseResult<RoutersVo> getRouters(){
+        Long userId = SecurityUtils.getUserId();
+        //查询menu 结果是tree的形式
+        List<Menu> menus = menuService.selectRouterMenuTreeByUserId(userId);
+        //封装数据返回
+        return ResponseResult.okResult(new RoutersVo(menus));
+    }
+
 }
