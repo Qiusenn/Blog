@@ -4,10 +4,13 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.qiusen.constants.SystemConstants;
 import com.qiusen.domain.entity.Menu;
+import com.qiusen.domain.vo.AdminMenuListVo;
 import com.qiusen.mapper.MenuMapper;
 import com.qiusen.service.MenuService;
+import com.qiusen.utils.BeanCopyUtils;
 import com.qiusen.utils.SecurityUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,16 +54,22 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
         }
         //构建tree
         //先找出第一层的菜单 然后去找他们的子菜单设置到children属性中
-        List<Menu> menuTree = builderMenuTree(menus, 0L);
-        return menuTree;
+        return builderMenuTree(menus, 0L);
+    }
+
+    @Override
+    public List<AdminMenuListVo> getAllList(String status, String menuName) {
+        LambdaQueryWrapper<Menu> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(StringUtils.hasText(status), Menu::getStatus, status);
+        queryWrapper.eq(StringUtils.hasText(menuName), Menu::getMenuName, menuName);
+        return BeanCopyUtils.copyBeanList(list(queryWrapper), AdminMenuListVo.class);
     }
 
     private List<Menu> builderMenuTree(List<Menu> menus, Long parentId) {
-        List<Menu> menuTree = menus.stream()
+        return menus.stream()
                 .filter(menu -> menu.getParentId().equals(parentId))
                 .map(menu -> menu.setChildren(getChildren(menu, menus)))
                 .collect(Collectors.toList());
-        return menuTree;
     }
     /**
      * 获取存入参数的 子Menu集合
@@ -69,10 +78,9 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
      * @return
      */
     private List<Menu> getChildren(Menu menu, List<Menu> menus) {
-        List<Menu> childrenList = menus.stream()
+        return menus.stream()
                 .filter(m -> m.getParentId().equals(menu.getId()))
                 .map(m->m.setChildren(getChildren(m,menus)))
                 .collect(Collectors.toList());
-        return childrenList;
     }
 }
