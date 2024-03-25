@@ -1,6 +1,10 @@
 package com.qiusen.service;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.qiusen.domain.dto.TagDto;
+import com.qiusen.domain.dto.TagListDto;
 import com.qiusen.domain.entity.Tag;
+import com.qiusen.domain.vo.PageVo;
+import com.qiusen.enums.ResponseResult;
 
 /**
  * 标签(Tag)表服务接口
@@ -9,4 +13,13 @@ import com.qiusen.domain.entity.Tag;
  * @since 2024-03-24 15:32:40
  */
 public interface TagService extends IService<Tag> {
+    ResponseResult<PageVo> pageTagList(Integer pageNum, Integer pageSize, TagListDto tagListDto);
+
+    ResponseResult add(TagListDto tagListDto);
+
+    ResponseResult del(Long id);
+
+    ResponseResult updateTag(TagDto tagDto);
+
+    ResponseResult get(Long id);
 }
