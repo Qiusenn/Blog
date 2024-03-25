@@ -1,8 +1,14 @@
 package com.qiusen.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.qiusen.domain.dto.AddArticleDto;
+import com.qiusen.domain.dto.AdminArticleDetailDto;
+import com.qiusen.domain.dto.ArticleListDto;
 import com.qiusen.domain.entity.Article;
+import com.qiusen.domain.vo.AdminArticleDetailVo;
+import com.qiusen.domain.vo.ArticleVo;
+import com.qiusen.domain.vo.PageVo;
 import com.qiusen.enums.ResponseResult;
 
 public interface ArticleService extends IService<Article> {
@@ -15,4 +21,10 @@ public interface ArticleService extends IService<Article> {
     ResponseResult updateViewCount(Long id);
 
     ResponseResult add(AddArticleDto article);
+
+    PageVo getList(Integer pageNum, Integer pageSize, ArticleListDto articleListDto);
+
+    AdminArticleDetailVo getArticleById(Integer id);
+
+    void updateArticle(AdminArticleDetailDto adminArticleDetailDto);
 }

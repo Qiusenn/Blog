@@ -5,11 +5,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.qiusen.constants.SystemConstants;
 import com.qiusen.domain.dto.AddArticleDto;
+import com.qiusen.domain.dto.AdminArticleDetailDto;
+import com.qiusen.domain.dto.ArticleListDto;
 import com.qiusen.domain.entity.Category;
-import com.qiusen.domain.vo.ArticleDetailVo;
-import com.qiusen.domain.vo.ArticleListVo;
-import com.qiusen.domain.vo.HotArticleVo;
-import com.qiusen.domain.vo.PageVo;
+import com.qiusen.domain.vo.*;
 import com.qiusen.domain.entity.ArticleTag;
 import com.qiusen.enums.ResponseResult;
 import com.qiusen.mapper.ArticleMapper;
@@ -22,6 +21,7 @@ import com.qiusen.utils.RedisCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Objects;
@@ -132,6 +132,37 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         //添加 博客和标签的关联
         articleTagService.saveBatch(articleTags);
         return ResponseResult.okResult();
+    }
+
+    @Override
+    public PageVo getList(Integer pageNum, Integer pageSize, ArticleListDto articleListDto) {
+        LambdaQueryWrapper<Article> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.like(StringUtils.hasText(articleListDto.getTitle()), Article::getTitle, articleListDto.getTitle());
+        queryWrapper.like(StringUtils.hasText(articleListDto.getSummary()), Article::getSummary, articleListDto.getSummary());
+        Page<Article> page = new Page<>();
+        page.setCurrent(pageNum);
+        page.setSize(pageSize);
+        page = page(page, queryWrapper);
+        List<ArticleVo> articleVos = BeanCopyUtils.copyBeanList(page.getRecords(), ArticleVo.class);
+        PageVo pageVo = new PageVo(articleVos, page.getTotal());
+        return pageVo;
+    }
+
+    @Override
+    public AdminArticleDetailVo getArticleById(Integer id) {
+        AdminArticleDetailVo adminArticleDetailVo = BeanCopyUtils.copyBean(getById(id), AdminArticleDetailVo.class);
+        LambdaQueryWrapper<ArticleTag> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(ArticleTag::getArticleId, id);
+        List<ArticleTag> articleTags = articleTagService.list(queryWrapper);
+        List<Long> tags = articleTags.stream().map(ArticleTag::getTagId).collect(Collectors.toList());
+        adminArticleDetailVo.setTags(tags);
+        return adminArticleDetailVo;
+    }
+
+    @Override
+    public void updateArticle(AdminArticleDetailDto adminArticleDetailDto) {
+        Article article = BeanCopyUtils.copyBean(adminArticleDetailDto, Article.class);
+        updateById(article);
     }
 
 }
