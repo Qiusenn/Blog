@@ -4,24 +4,25 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.qiusen.constants.SystemConstants;
+import com.qiusen.domain.dto.AddArticleDto;
 import com.qiusen.domain.entity.Category;
 import com.qiusen.domain.vo.ArticleDetailVo;
 import com.qiusen.domain.vo.ArticleListVo;
 import com.qiusen.domain.vo.HotArticleVo;
 import com.qiusen.domain.vo.PageVo;
+import com.qiusen.domain.entity.ArticleTag;
 import com.qiusen.enums.ResponseResult;
 import com.qiusen.mapper.ArticleMapper;
 import com.qiusen.service.ArticleService;
 import com.qiusen.domain.entity.Article;
+import com.qiusen.service.ArticleTagService;
 import com.qiusen.service.CategoryService;
 import com.qiusen.utils.BeanCopyUtils;
 import com.qiusen.utils.RedisCache;
-import org.apache.ibatis.jdbc.SQL;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -34,6 +35,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Autowired
     private RedisCache redisCache;
+
+    @Autowired
+    private ArticleTagService articleTagService;
 
     /**
      * 分页获取热门文章
@@ -115,4 +119,19 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         redisCache.incrementCacheMapValue("article:viewCount",id.toString(),1);
         return ResponseResult.okResult();
     }
+
+    @Override
+    @Transactional
+    public ResponseResult add(AddArticleDto articleDto) {
+        //添加 博客
+        Article article = BeanCopyUtils.copyBean(articleDto, Article.class);
+        save(article);
+        List<ArticleTag> articleTags = articleDto.getTags().stream()
+                .map(tagId -> new ArticleTag(article.getId(), tagId))
+                .collect(Collectors.toList());
+        //添加 博客和标签的关联
+        articleTagService.saveBatch(articleTags);
+        return ResponseResult.okResult();
+    }
+
 }

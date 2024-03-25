@@ -6,12 +6,15 @@ import com.qiusen.domain.dto.TagDto;
 import com.qiusen.domain.dto.TagListDto;
 import com.qiusen.domain.entity.Tag;
 import com.qiusen.domain.vo.PageVo;
+import com.qiusen.domain.vo.TagVo;
 import com.qiusen.enums.ResponseResult;
 import com.qiusen.mapper.TagMapper;
 import com.qiusen.service.TagService;
 import com.qiusen.utils.BeanCopyUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+
+import java.util.List;
 
 /**
  * 标签(Tag)表服务实现类
@@ -66,5 +69,14 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
     public ResponseResult get(Long id) {
         Tag tag = getById(id);
         return ResponseResult.okResult(tag);
+    }
+
+    @Override
+    public List<TagVo> listAllTag() {
+        LambdaQueryWrapper<Tag> wrapper = new LambdaQueryWrapper<>();
+        wrapper.select(Tag::getId,Tag::getName);
+        List<Tag> list = list(wrapper);
+        List<TagVo> tagVos = BeanCopyUtils.copyBeanList(list, TagVo.class);
+        return tagVos;
     }
 }

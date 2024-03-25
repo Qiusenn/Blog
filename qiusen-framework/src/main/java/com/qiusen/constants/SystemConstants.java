@@ -39,4 +39,7 @@ public class SystemConstants
      * 按钮权限
      */
     public static final Object BUTTON = "F";
+
+    /** 正常状态 */
+    public static final String NORMAL = "0";
 }

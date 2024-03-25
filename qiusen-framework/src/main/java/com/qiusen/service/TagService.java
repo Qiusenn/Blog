@@ -4,7 +4,10 @@ import com.qiusen.domain.dto.TagDto;
 import com.qiusen.domain.dto.TagListDto;
 import com.qiusen.domain.entity.Tag;
 import com.qiusen.domain.vo.PageVo;
+import com.qiusen.domain.vo.TagVo;
 import com.qiusen.enums.ResponseResult;
+
+import java.util.List;
 
 /**
  * 标签(Tag)表服务接口
@@ -22,4 +25,6 @@ public interface TagService extends IService<Tag> {
     ResponseResult updateTag(TagDto tagDto);
 
     ResponseResult get(Long id);
+
+    List<TagVo> listAllTag();
 }

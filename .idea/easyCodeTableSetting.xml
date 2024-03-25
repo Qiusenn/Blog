@@ -202,9 +202,9 @@
               </option>
               <option name="name" value="SgArticleTag" />
               <option name="preName" value="sg_" />
-              <option name="saveModelName" value="qiusen-blog" />
-              <option name="savePackageName" value="" />
-              <option name="savePath" value="./qiusen-blog/src/main/java" />
+              <option name="saveModelName" value="qiusen-framework" />
+              <option name="savePackageName" value="com.qiusen" />
+              <option name="savePath" value="./qiusen-framework/src/main/java/com/qiusen" />
               <option name="templateGroupName" value="MybatisPlus" />
             </TableInfoDTO>
           </value>

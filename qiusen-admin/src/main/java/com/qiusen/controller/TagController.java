@@ -3,12 +3,15 @@ package com.qiusen.controller;
 import com.qiusen.domain.dto.TagDto;
 import com.qiusen.domain.dto.TagListDto;
 import com.qiusen.domain.vo.PageVo;
+import com.qiusen.domain.vo.TagVo;
 import com.qiusen.enums.ResponseResult;
 import com.qiusen.service.TagService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/content/tag")
@@ -46,5 +49,11 @@ public class TagController {
     @GetMapping("{id}")
     public ResponseResult get(@PathVariable Long id){
         return tagService.get(id);
+    }
+
+    @GetMapping("/listAllTag")
+    public ResponseResult listAllTag(){
+        List<TagVo> list = tagService.listAllTag();
+        return ResponseResult.okResult(list);
     }
 }
