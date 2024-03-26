@@ -6,16 +6,22 @@ import com.qiusen.constants.SystemConstants;
 import com.qiusen.domain.entity.Menu;
 import com.qiusen.domain.vo.AdminMenuDetailVo;
 import com.qiusen.domain.vo.AdminMenuListVo;
+import com.qiusen.domain.vo.AdminRoleMenuTreeVo;
+import com.qiusen.domain.vo.AdminTreeSelectVo;
+import com.qiusen.entity.RoleMenu;
 import com.qiusen.enums.AppHttpCodeEnum;
 import com.qiusen.enums.ResponseResult;
 import com.qiusen.exception.SystemException;
 import com.qiusen.mapper.MenuMapper;
 import com.qiusen.service.MenuService;
+import com.qiusen.service.RoleMenuService;
 import com.qiusen.utils.BeanCopyUtils;
 import com.qiusen.utils.SecurityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +33,15 @@ import java.util.stream.Collectors;
  */
 @Service("menuService")
 public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements MenuService {
+
+    @Autowired
+    private RoleMenuService roleMenuService;
+
+    @Autowired
+    private MenuService menuService;
+
+    @Autowired
+    private MenuMapper menuMapper;
     @Override
     public List<String> selectPermsByUserId(Long id) {
         //如果是管理员，返回所有的权限
@@ -83,12 +98,45 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
         return ResponseResult.okResult();
     }
 
+
+    @Override
+    public List<AdminTreeSelectVo> treeselect() {
+        List<Menu> menus = getBaseMapper().selectAllRouterMenu();
+        //构建tree
+        //先找出第一层的菜单 然后去找他们的子菜单设置到children属性中
+        List<AdminTreeSelectVo> adminTreeSelectVos = new ArrayList<>();
+        for (Menu menu : menus) {
+            AdminTreeSelectVo adminTreeSelectVo = new AdminTreeSelectVo();
+            adminTreeSelectVo.setId(menu.getId());
+            adminTreeSelectVo.setParentId(menu.getParentId());
+            adminTreeSelectVo.setLabel(menu.getMenuName());
+            adminTreeSelectVos.add(adminTreeSelectVo);
+        }
+
+        return builderAdminMenuTree(adminTreeSelectVos, 0L);
+    }
+
+    private List<AdminTreeSelectVo> builderAdminMenuTree(List<AdminTreeSelectVo> menus, Long parentId) {
+        return menus.stream()
+                .filter(menu -> menu.getParentId().equals(parentId))
+                .map(menu -> menu.setChildren(getChildren(menu, menus)))
+                .collect(Collectors.toList());
+    }
+
     private List<Menu> builderMenuTree(List<Menu> menus, Long parentId) {
         return menus.stream()
                 .filter(menu -> menu.getParentId().equals(parentId))
                 .map(menu -> menu.setChildren(getChildren(menu, menus)))
                 .collect(Collectors.toList());
     }
+
+    private List<AdminTreeSelectVo> getChildren(AdminTreeSelectVo menu, List<AdminTreeSelectVo> menus) {
+        return menus.stream()
+                .filter(m -> m.getParentId().equals(menu.getId()))
+                .map(m->m.setChildren(getChildren(m, menus)))
+                .collect(Collectors.toList());
+    }
+
     /**
      * 获取存入参数的 子Menu集合
      * @param menu
@@ -100,5 +148,23 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
                 .filter(m -> m.getParentId().equals(menu.getId()))
                 .map(m->m.setChildren(getChildren(m,menus)))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public AdminRoleMenuTreeVo getRoleMenuTreeSelect(Integer id) {
+        List<AdminTreeSelectVo> treeSelect = menuService.treeselect();
+        List<String> checkedKeys;
+
+        //判断是否是管理员
+        if (id.toString().equals(SystemConstants.ADMAIN)) {
+            //如果是 获取所有符合要求的Menu
+            List<Menu> menus = menuMapper.selectAllRouterMenu();
+            checkedKeys = menus.stream().map(item -> item.getId().toString()).collect(Collectors.toList());
+        }else {
+            List<RoleMenu> roleMenus;
+            roleMenus = roleMenuService.getMenusByRoleId(id);
+            checkedKeys = roleMenus.stream().map(item -> item.getMenuId().toString()).collect(Collectors.toList());
+        }
+        return new AdminRoleMenuTreeVo(treeSelect, checkedKeys);
     }
 }

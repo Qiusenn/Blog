@@ -3,6 +3,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.qiusen.domain.entity.Menu;
 import com.qiusen.domain.vo.AdminMenuDetailVo;
 import com.qiusen.domain.vo.AdminMenuListVo;
+import com.qiusen.domain.vo.AdminRoleMenuTreeVo;
+import com.qiusen.domain.vo.AdminTreeSelectVo;
 import com.qiusen.enums.ResponseResult;
 
 import java.util.List;
@@ -23,4 +25,8 @@ public interface MenuService extends IService<Menu> {
     AdminMenuDetailVo getMenuDetailById(Integer id);
 
     ResponseResult put(Menu menu);
+
+    List<AdminTreeSelectVo> treeselect();
+
+    AdminRoleMenuTreeVo getRoleMenuTreeSelect(Integer id);
 }

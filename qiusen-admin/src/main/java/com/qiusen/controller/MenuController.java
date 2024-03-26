@@ -4,6 +4,8 @@ package com.qiusen.controller;
 import com.qiusen.domain.entity.Menu;
 import com.qiusen.domain.vo.AdminMenuDetailVo;
 import com.qiusen.domain.vo.AdminMenuListVo;
+import com.qiusen.domain.vo.AdminRoleMenuTreeVo;
+import com.qiusen.domain.vo.AdminTreeSelectVo;
 import com.qiusen.enums.ResponseResult;
 import com.qiusen.service.MenuService;
 import io.swagger.annotations.Api;
@@ -74,6 +76,18 @@ public class MenuController {
     public ResponseResult del(@PathVariable Integer id){
         menuService.removeById(id);
         return ResponseResult.okResult();
+    }
+
+    @GetMapping("treeselect")
+    public ResponseResult treeselect(){
+        List<AdminTreeSelectVo> list = menuService.treeselect();
+        return ResponseResult.okResult(list);
+    }
+
+    @GetMapping("/roleMenuTreeselect/{id}")
+    public ResponseResult getRoleMenuTreeSelect(@PathVariable Integer id) {
+        AdminRoleMenuTreeVo data = menuService.getRoleMenuTreeSelect(id);
+        return ResponseResult.okResult(data);
     }
 
 }

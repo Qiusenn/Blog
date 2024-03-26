@@ -2,6 +2,8 @@ package com.qiusen.domain.entity;
 
 import java.util.Date;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -37,16 +39,20 @@ public class Role {
     
     /* 删除标志（0代表存在 1代表删除） */
     private String delFlag;
-    
+
+    @TableField(fill = FieldFill.INSERT)
     /* 创建者 */
     private Long createBy;
-    
+
+    @TableField(fill = FieldFill.INSERT)
     /* 创建时间 */
     private Date createTime;
-    
+
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     /* 更新者 */
     private Long updateBy;
-    
+
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     /* 更新时间 */
     private Date updateTime;
     
