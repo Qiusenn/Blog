@@ -11,6 +11,9 @@ import com.qiusen.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.List;
+
 @RestController
 @RequestMapping("/content/article")
 public class ArticleController {
@@ -64,8 +67,9 @@ public class ArticleController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseResult del(@PathVariable Integer id) {
-        articleService.removeById(id);
+    public ResponseResult del(@PathVariable String id) {
+        List<String> split = Arrays.asList(id.split(","));
+        articleService.removeByIds(split);
         return ResponseResult.okResult();
     }
 

@@ -14,6 +14,9 @@ import org.simpleframework.xml.Path;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.List;
+
 
 @RestController
 @RequestMapping("system/role")
@@ -64,8 +67,9 @@ public class RoleController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseResult updateRole(@PathVariable Integer id) {
-        roleService.removeById(id);
+    public ResponseResult updateRole(@PathVariable String id) {
+        List<String> split = Arrays.asList(id.split(","));
+        roleService.removeByIds(split);
         return ResponseResult.okResult();
     }
 

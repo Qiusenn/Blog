@@ -20,7 +20,7 @@ public interface TagService extends IService<Tag> {
 
     ResponseResult add(TagListDto tagListDto);
 
-    ResponseResult del(Long id);
+    ResponseResult del(String id);
 
     ResponseResult updateTag(TagDto tagDto);
 

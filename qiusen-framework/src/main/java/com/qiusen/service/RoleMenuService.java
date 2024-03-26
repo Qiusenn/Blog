@@ -1,6 +1,6 @@
 package com.qiusen.service;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.qiusen.entity.RoleMenu;
+import com.qiusen.domain.entity.RoleMenu;
 
 import java.util.List;
 

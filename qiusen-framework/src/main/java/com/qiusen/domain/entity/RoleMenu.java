@@ -1,4 +1,4 @@
-package com.qiusen.entity;
+package com.qiusen.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;

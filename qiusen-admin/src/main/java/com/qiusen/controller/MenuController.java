@@ -12,6 +12,7 @@ import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -73,8 +74,9 @@ public class MenuController {
      * @return
      */
     @DeleteMapping("{id}")
-    public ResponseResult del(@PathVariable Integer id){
-        menuService.removeById(id);
+    public ResponseResult del(@PathVariable String id){
+        List<String> split = Arrays.asList(id.split(","));
+        menuService.removeByIds(split);
         return ResponseResult.okResult();
     }
 

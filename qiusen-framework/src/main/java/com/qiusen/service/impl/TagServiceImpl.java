@@ -14,6 +14,7 @@ import com.qiusen.utils.BeanCopyUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -53,8 +54,9 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
     }
 
     @Override
-    public ResponseResult del(Long id) {
-        removeById(id);
+    public ResponseResult del(String id) {
+        List<String> split = Arrays.asList(id.split(","));
+        removeByIds(split);
         return ResponseResult.okResult();
     }
 

@@ -1,7 +1,7 @@
 package com.qiusen.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.qiusen.entity.RoleMenu;
+import com.qiusen.domain.entity.RoleMenu;
 import com.qiusen.mapper.RoleMenuMapper;
 import com.qiusen.service.RoleMenuService;
 import org.springframework.stereotype.Service;

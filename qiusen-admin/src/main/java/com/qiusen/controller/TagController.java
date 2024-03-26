@@ -35,7 +35,7 @@ public class TagController {
 
     @ApiOperation("删除标签")
     @DeleteMapping("{id}")
-    public ResponseResult del(@PathVariable Long id){
+    public ResponseResult del(@PathVariable String id){
         return tagService.del(id);
     }
 

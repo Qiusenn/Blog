@@ -8,7 +8,7 @@ import com.qiusen.domain.vo.AdminMenuDetailVo;
 import com.qiusen.domain.vo.AdminMenuListVo;
 import com.qiusen.domain.vo.AdminRoleMenuTreeVo;
 import com.qiusen.domain.vo.AdminTreeSelectVo;
-import com.qiusen.entity.RoleMenu;
+import com.qiusen.domain.entity.RoleMenu;
 import com.qiusen.enums.AppHttpCodeEnum;
 import com.qiusen.enums.ResponseResult;
 import com.qiusen.exception.SystemException;

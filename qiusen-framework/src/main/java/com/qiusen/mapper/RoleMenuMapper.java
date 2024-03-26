@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author qiusen
  * @since 2024-03-26 15:56:39
  */
-import com.qiusen.entity.RoleMenu;
+import com.qiusen.domain.entity.RoleMenu;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
