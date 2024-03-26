@@ -4,7 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.qiusen.constants.SystemConstants;
 import com.qiusen.domain.entity.Menu;
+import com.qiusen.domain.vo.AdminMenuDetailVo;
 import com.qiusen.domain.vo.AdminMenuListVo;
+import com.qiusen.enums.AppHttpCodeEnum;
+import com.qiusen.enums.ResponseResult;
+import com.qiusen.exception.SystemException;
 import com.qiusen.mapper.MenuMapper;
 import com.qiusen.service.MenuService;
 import com.qiusen.utils.BeanCopyUtils;
@@ -63,6 +67,20 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
         queryWrapper.eq(StringUtils.hasText(status), Menu::getStatus, status);
         queryWrapper.eq(StringUtils.hasText(menuName), Menu::getMenuName, menuName);
         return BeanCopyUtils.copyBeanList(list(queryWrapper), AdminMenuListVo.class);
+    }
+
+    @Override
+    public AdminMenuDetailVo getMenuDetailById(Integer id) {
+        return BeanCopyUtils.copyBean(getById(id), AdminMenuDetailVo.class);
+    }
+
+    @Override
+    public ResponseResult put(Menu menu) {
+        if(menu.getId().equals(menu.getParentId())){
+            throw new SystemException(AppHttpCodeEnum.MENU_PARENT_ID_ERR);
+        }
+        updateById(menu);
+        return ResponseResult.okResult();
     }
 
     private List<Menu> builderMenuTree(List<Menu> menus, Long parentId) {

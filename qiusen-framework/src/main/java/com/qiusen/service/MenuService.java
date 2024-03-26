@@ -1,7 +1,9 @@
 package com.qiusen.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.qiusen.domain.entity.Menu;
+import com.qiusen.domain.vo.AdminMenuDetailVo;
 import com.qiusen.domain.vo.AdminMenuListVo;
+import com.qiusen.enums.ResponseResult;
 
 import java.util.List;
 
@@ -17,4 +19,8 @@ public interface MenuService extends IService<Menu> {
     List<Menu> selectRouterMenuTreeByUserId(Long userId);
 
     List<AdminMenuListVo> getAllList(String status, String menuName);
+
+    AdminMenuDetailVo getMenuDetailById(Integer id);
+
+    ResponseResult put(Menu menu);
 }

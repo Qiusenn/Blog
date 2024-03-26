@@ -3,6 +3,7 @@ package com.qiusen.controller;
 import com.qiusen.domain.dto.AddArticleDto;
 import com.qiusen.domain.dto.AdminArticleDetailDto;
 import com.qiusen.domain.dto.ArticleListDto;
+import com.qiusen.domain.entity.Menu;
 import com.qiusen.domain.vo.AdminArticleDetailVo;
 import com.qiusen.domain.vo.PageVo;
 import com.qiusen.enums.ResponseResult;
@@ -67,6 +68,8 @@ public class ArticleController {
         articleService.removeById(id);
         return ResponseResult.okResult();
     }
+
+
 
 }
 
