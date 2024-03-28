@@ -2,6 +2,8 @@ package com.qiusen.domain.entity;
 
 import java.util.Date;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -63,18 +65,22 @@ public class User {
     private String avatar;
 
     @ApiModelProperty(notes = "创建人的用户id")
+    @TableField(fill = FieldFill.INSERT)
     /* 创建人的用户id */
     private Long createBy;
 
     @ApiModelProperty(notes = "创建时间")
+    @TableField(fill = FieldFill.INSERT)
     /* 创建时间 */
     private Date createTime;
 
     @ApiModelProperty(notes = "更新人")
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     /* 更新人 */
     private Long updateBy;
 
     @ApiModelProperty(notes = "更新时间")
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     /* 更新时间 */
     private Date updateTime;
 
