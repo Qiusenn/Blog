@@ -31,6 +31,13 @@ public class LoginController {
     private MenuService menuService;
     @Autowired
     private RoleService roleService;
+
+
+    /**
+     * 用户登录
+     * @param user
+     * @return
+     */
     @PostMapping("/user/login")
     public ResponseResult login(@RequestBody User user){
         if(!StringUtils.hasText(user.getUserName())){
@@ -39,6 +46,11 @@ public class LoginController {
         }
         return loginService.login(user);
     }
+
+    /**
+     * 获取用户信息
+     * @return
+     */
     @GetMapping("getInfo")
     public ResponseResult<AdminUserInfoVo> getInfo(){
         //获取当前登录的用户
@@ -55,6 +67,10 @@ public class LoginController {
         return ResponseResult.okResult(adminUserInfoVo);
     }
 
+    /**
+     * 生成前端路由 id条件获取
+     * @return
+     */
     @GetMapping("getRouters")
     public ResponseResult<RoutersVo> getRouters(){
         Long userId = SecurityUtils.getUserId();
@@ -64,6 +80,10 @@ public class LoginController {
         return ResponseResult.okResult(new RoutersVo(menus));
     }
 
+    /**
+     * 退出登录
+     * @return
+     */
     @PostMapping("/user/logout")
     public ResponseResult logout(){
         return loginService.logout();

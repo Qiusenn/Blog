@@ -14,6 +14,13 @@ import java.io.IOException;
 public class UploadController {
     @Autowired
     private UploadService uploadService;
+
+    /**
+     * 上传文件
+     * @param multipartFile
+     * @return
+     * @throws IOException
+     */
     @PostMapping("/upload")
     public ResponseResult uploadImg(@RequestParam("img") MultipartFile multipartFile) throws IOException {
         return uploadService.uploadImg(multipartFile);

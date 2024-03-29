@@ -66,6 +66,12 @@ public class ArticleController {
         return ResponseResult.okResult();
     }
 
+
+    /**
+     * 根据id删除逻辑删除对应博客
+     * @param id
+     * @return
+     */
     @DeleteMapping("{id}")
     public ResponseResult del(@PathVariable String id) {
         List<String> split = Arrays.asList(id.split(","));

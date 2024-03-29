@@ -11,6 +11,8 @@ import com.qiusen.domain.vo.ArticleVo;
 import com.qiusen.domain.vo.PageVo;
 import com.qiusen.enums.ResponseResult;
 
+import java.util.List;
+
 public interface ArticleService extends IService<Article> {
     ResponseResult hotArticleList();
 
@@ -27,4 +29,6 @@ public interface ArticleService extends IService<Article> {
     AdminArticleDetailVo getArticleById(Integer id);
 
     void updateArticle(AdminArticleDetailDto adminArticleDetailDto);
+
+    void updateBatchByIdJob(List<Article> articles);
 }

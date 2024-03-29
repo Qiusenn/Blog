@@ -40,6 +40,5 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, UserRole> i
         remove(queryWrapper);
         List<UserRole> collect = roleIds.stream().map(item -> new UserRole(id, Long.valueOf(item))).collect(Collectors.toList());
         saveBatch(collect);
-
     }
 }

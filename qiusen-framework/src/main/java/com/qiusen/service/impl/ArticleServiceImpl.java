@@ -1,6 +1,7 @@
 package com.qiusen.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.qiusen.constants.SystemConstants;
@@ -163,6 +164,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     public void updateArticle(AdminArticleDetailDto adminArticleDetailDto) {
         Article article = BeanCopyUtils.copyBean(adminArticleDetailDto, Article.class);
         updateById(article);
+    }
+
+    @Override
+    public void updateBatchByIdJob(List<Article> articles) {
+        LambdaQueryWrapper<Article> queryWrapper = new LambdaQueryWrapper<>();
     }
 
 }

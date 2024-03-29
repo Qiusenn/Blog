@@ -80,12 +80,21 @@ public class MenuController {
         return ResponseResult.okResult();
     }
 
+    /**
+     * 生成菜单树形结构
+     * @return
+     */
     @GetMapping("treeselect")
     public ResponseResult treeselect(){
         List<AdminTreeSelectVo> list = menuService.treeselect();
         return ResponseResult.okResult(list);
     }
 
+    /**
+     * 根据id生成角色菜单树形结构
+     * @param id
+     * @return
+     */
     @GetMapping("/roleMenuTreeselect/{id}")
     public ResponseResult getRoleMenuTreeSelect(@PathVariable Integer id) {
         AdminRoleMenuTreeVo data = menuService.getRoleMenuTreeSelect(id);

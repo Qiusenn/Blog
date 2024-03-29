@@ -14,7 +14,6 @@ import com.qiusen.enums.ResponseResult;
 import com.qiusen.service.CategoryService;
 import com.qiusen.utils.BeanCopyUtils;
 import com.qiusen.utils.WebUtils;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -28,12 +27,21 @@ import java.util.List;
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;
+
+    /**
+     * 获取所有分类列表
+     * @return
+     */
     @GetMapping("/listAllCategory")
     public ResponseResult listAllCategory(){
         List<CategoryVo> list = categoryService.listAllCategory();
         return ResponseResult.okResult(list);
     }
 
+    /**
+     * 导出分类
+     * @param response
+     */
     @PreAuthorize("@ps.hasPermission('content:category:export')")
     @GetMapping("/export")
     public void export(HttpServletResponse response){
@@ -52,12 +60,24 @@ public class CategoryController {
         }
     }
 
+    /**
+     * 分页获取条件获取分类列表
+     * @param pageNum
+     * @param pageSize
+     * @param categryListDto
+     * @return
+     */
     @GetMapping("list")
     public ResponseResult<PageVo> list(Integer pageNum, Integer pageSize, CategryListDto categryListDto) {
         PageVo data = categoryService.queryList(pageNum, pageSize, categryListDto);
         return ResponseResult.okResult(data);
     }
 
+    /**
+     * 添加分类
+     * @param adminCategoryAddVo
+     * @return
+     */
     @PostMapping
     public ResponseResult add(@RequestBody AdminCategoryAddVo adminCategoryAddVo) {
         Category category = BeanCopyUtils.copyBean(adminCategoryAddVo, Category.class);
@@ -65,18 +85,33 @@ public class CategoryController {
         return ResponseResult.okResult();
     }
 
+    /**
+     * 根据id获取 分类
+     * @param id
+     * @return
+     */
     @GetMapping("{id}")
     public ResponseResult<PageVo> getById(@PathVariable Integer id) {
         CategoryListVo data = categoryService.getCategoryById(id);
         return ResponseResult.okResult(data);
     }
 
+    /**
+     * 更新分类
+     * @param categoryListVo
+     * @return
+     */
     @PutMapping()
     public ResponseResult<PageVo> updateCategory(@RequestBody CategoryListVo categoryListVo) {
         categoryService.updateCategory(categoryListVo);
         return ResponseResult.okResult();
     }
 
+    /**
+     * 逻辑删除分类
+     * @param id
+     * @return
+     */
     @DeleteMapping("{id}")
     public ResponseResult del(@PathVariable String id) {
         List<String> split = Arrays.asList(id.split(","));

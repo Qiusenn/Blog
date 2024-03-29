@@ -18,6 +18,10 @@ public class categoryController {
     @Autowired
     private CategoryService categoryService;
 
+    /**
+     * 博客分类列表
+     * @return
+     */
     @ApiOperation("分类列表")
     @GetMapping("/getCategoryList")
     public ResponseResult getCategoryList() {

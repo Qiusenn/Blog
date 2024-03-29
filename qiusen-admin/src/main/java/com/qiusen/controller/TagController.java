@@ -21,36 +21,68 @@ public class TagController {
     private TagService tagService;
 
 
+    /**
+     * 获取标签列表
+     * @param pageNum
+     * @param pageSize
+     * @param tagListDto
+     * @return
+     */
     @ApiOperation("获取标签列表")
     @GetMapping("/list")
     public ResponseResult<PageVo> list(Integer pageNum, Integer pageSize, TagListDto tagListDto){
         return tagService.pageTagList(pageNum,pageSize,tagListDto);
     }
 
+    /**
+     * 新增标签
+     * @param tagListDto
+     * @return
+     */
     @ApiOperation("新增标签")
     @PostMapping
     public ResponseResult add(@RequestBody TagListDto tagListDto){
         return tagService.add(tagListDto);
     }
 
+    /**
+     * 删除标签
+     * @param id
+     * @return
+     */
     @ApiOperation("删除标签")
     @DeleteMapping("{id}")
     public ResponseResult del(@PathVariable String id){
         return tagService.del(id);
     }
 
+    /**
+     * 修改标签
+     * @param TagDto
+     * @return
+     */
     @ApiOperation("修改标签")
     @PutMapping
     public ResponseResult add(@RequestBody TagDto TagDto){
         return tagService.updateTag(TagDto);
     }
 
+    /**
+     * 查询标签
+     * @param id
+     * @return
+     */
     @ApiOperation("查询标签")
     @GetMapping("{id}")
     public ResponseResult get(@PathVariable Long id){
         return tagService.get(id);
     }
 
+    /**
+     * 获取全部标签
+     * @return
+     */
+    @ApiOperation("获取全部标签")
     @GetMapping("/listAllTag")
     public ResponseResult listAllTag(){
         List<TagVo> list = tagService.listAllTag();

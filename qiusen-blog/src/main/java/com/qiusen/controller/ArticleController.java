@@ -16,26 +16,45 @@ public class ArticleController {
     @Autowired
     private ArticleService articleService;
 
+    /**
+     * 获取热门文章
+     * @return
+     */
     @ApiOperation("获取热门文章")
     @GetMapping("/hotArticleList")
     public ResponseResult hotArticleList() {
         return articleService.hotArticleList();
     }
 
-
+    /**
+     * 根据分类id分页获取文章列表
+     * @param pageNum
+     * @param pageSize
+     * @param categoryId
+     * @return
+     */
     @ApiOperation("获取文章列表")
     @GetMapping("/articleList")
-    public ResponseResult articleList(Integer pageNum,Integer pageSize,Long
-            categoryId){
+    public ResponseResult articleList(Integer pageNum,Integer pageSize,Long categoryId){
         return articleService.articleList(pageNum,pageSize,categoryId);
     }
 
+    /**
+     * 根据id获取文章详情
+     * @param id
+     * @return
+     */
     @ApiOperation("获取文章详情")
     @GetMapping("/{id}")
     public ResponseResult getArticleDetail(@PathVariable("id") Long id){
         return articleService.getArticleDetail(id);
     }
 
+    /**
+     * 根据id更新博客文章对应浏览量
+     * @param id
+     * @return
+     */
     @ApiOperation("获取文章浏览记录数")
     @PutMapping("/updateViewCount/{id}")
     public ResponseResult updateViewCount(@PathVariable("id") Long id){
